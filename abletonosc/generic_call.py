@@ -6,22 +6,37 @@ import Live  # type: ignore
 from .handler import AbletonOSCHandler
 
 
+def parse_code(args):
+    """
+    Return the code to execute and a flag for inspection.
+    """
+    code = str(args[0])
+    debug_flag = (len(args) > 1) and (args[1] == "debug")
+    return code, debug_flag
+
+
 class GenericCallHandler(AbletonOSCHandler):
     def init_api(self):
-        def post_eval(code) -> Tuple:
-            code = str(code[0])
-            result = eval(code)
-            output = OutputLogger()
-            introspect_module(result, output)
-            return str(result), str(output),
+        """This code is not safe: usage of eval and exec."""
 
-        def post_exec(code) -> Tuple:
-            code = str(code[0])
+        def post_eval(args) -> Tuple:
+            code, debug = parse_code(args)
+            result = eval(code)
+            if debug:
+                output = OutputLogger()
+                introspect_module(result, output)
+                return str(result), str(output),
+            return str(result),
+
+        def post_exec(args) -> Tuple:
+            code, debug = parse_code(args)
             result = []
             exec(code)
-            output = OutputLogger()
-            introspect_module(result, output)
-            return str(result), str(output),
+            if debug:
+                output = OutputLogger()
+                introspect_module(result, output)
+                return str(result), str(output),
+            return str(result),
 
         self.osc_server.add_handler("/live/eval", post_eval)
         self.osc_server.add_handler("/live/exec", post_exec)

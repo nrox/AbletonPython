@@ -36,7 +36,7 @@ def test_list_and_preview(client):
     code = inspect.getsource(browser.get_folder)
     folders = ["'Analog'", "'Strings'"]
     code = code + "\n" + f"get_folder(Live, result, 'instruments', {','.join(folders)})"
-    items_str, _ = client.query("/live/exec", (code,), timeout=3)
+    items_str, = client.query("/live/exec", (code,), timeout=3)
     items = parse_items(items_str)
     for i in items:
         browser.preview(client, i)
