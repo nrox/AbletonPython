@@ -87,7 +87,8 @@ class Manager(ControlSurface):
                 abletonosc.ClipSlotHandler(self),
                 abletonosc.TrackHandler(self),
                 abletonosc.DeviceHandler(self),
-                abletonosc.ViewHandler(self)
+                abletonosc.ViewHandler(self),
+                abletonosc.GenericCallHandler(self)
             ]
 
     def clear_api(self):
