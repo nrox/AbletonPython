@@ -34,6 +34,29 @@ Activity logs will be output to a `logs` subdirectory. Logging granularity can b
 AbletonOSC listens for OSC messages on port **11000**, and sends replies on port **11001**. Replies will be sent to the
 same IP as the originating message. When querying properties, OSC wildcard patterns can be used; for example, `/live/clip/get/* 0 0` will query all the properties of track 0, clip 0.
 
+
+## Remote Execution API (eval, exec)
+
+This is unsafe but flexible!
+
+<details>
+<summary><b>Documentation</b>: Remote Execution API (eval, exec)</summary>
+
+
+| Address    | Query params  | Response params | Description                                                |
+|:-----------|:--------------|:----------------|:-----------------------------------------------------------|
+| /live/eval | code, (debug) | result,         | run result = eval(code) return (result,)                   |
+| /live/exec | code, (debug) | result,         | run exec(code) and return the value of the result variable |
+
+Tests: [tests/test_generic_call.py](tests/test_generic_call.py)
+Examples: [tests/test_browser.py](tests/test_browser.py)
+
+The code to execute and evaluate can be opinionated from the API:
+- [https://structure-void.com/PythonLiveAPI_documentation/Live11.0.xml](https://structure-void.com/PythonLiveAPI_documentation/Live11.0.xml)
+- [https://nsuspray.github.io/Live_API_Doc/11.0.0.xml](https://nsuspray.github.io/Live_API_Doc/11.0.0.xml)
+
+</details>
+
 ## Application API
 
 <details>
